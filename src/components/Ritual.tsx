@@ -8,10 +8,13 @@ import type { ISourceOptions } from '@tsparticles/engine';
 
 // Charger les sons (si les fichiers manquent, ça ne plantera pas)
 const sfx = {
-  music: new Howl({ src: ['/music.mp3'], loop: true, volume: 0.3 }),
+  music: new Howl({ src: ['/music.mp3'], loop: true, volume: 0.1 }),
   drone: new Howl({ src: ['/drone.mp3'], loop: true, volume: 0.4 }),
   click: new Howl({ src: ['/click.mp3'], volume: 0.2 }),
   reveal: new Howl({ src: ['/reveal.mp3'], volume: 0.5 }),
+  endSound: new Howl({ src: ['/end_sound.mp3'], volume: 0.6 }),
+  errorEmail: new Howl({ src: ['/error_email.mp3'], volume: 0.5 }),
+  nextInput: new Howl({ src: ['/next_input.mp3'], volume: 0.03 }),
 };
 
 // Initialiser les particules une seule fois au chargement du module
@@ -32,6 +35,7 @@ export default function Ritual() {
   const start = () => {
     if (!sfx.music.playing()) sfx.music.play();
     if (!sfx.drone.playing()) sfx.drone.play();
+    sfx.nextInput.play();
     sfx.reveal.play();
     setStep(1);
   };
@@ -42,6 +46,7 @@ export default function Ritual() {
   };
 
   const next = () => {
+    sfx.nextInput.play();
     sfx.reveal.play();
     setStep(prev => prev + 1);
   };
@@ -49,9 +54,11 @@ export default function Ritual() {
   const nextWithEmailValidation = () => {
     if (validateEmail(formData.email)) {
       setEmailError(false);
+      sfx.nextInput.play();
       sfx.reveal.play();
       setStep(prev => prev + 1);
     } else {
+      sfx.errorEmail.play();
       setEmailError(true);
       setTimeout(() => setEmailError(false), 600);
     }
@@ -96,6 +103,10 @@ export default function Ritual() {
   useEffect(() => {
     if (!particlesInitialized) {
       initPromise.then(() => setParticlesReady(true));
+    }
+    // Démarrer la musique dès le chargement du composant
+    if (!sfx.music.playing()) {
+      sfx.music.play();
     }
   }, []);
 
@@ -150,7 +161,7 @@ export default function Ritual() {
   }), []);
 
   const finaleOptions = useMemo<ISourceOptions>(() => ({
-    fullScreen: { enable: true, zIndex: 100 },
+    fullScreen: { enable: true, zIndex: 9999 },
     background: { color: 'transparent' },
     particles: {
       number: { value: 220, density: { enable: true, area: 700 } },
@@ -493,6 +504,7 @@ export default function Ritual() {
       position: fixed;
       inset: 0;
       pointer-events: none;
+      z-index: 9999 !important;
     }
   `;
 
@@ -616,6 +628,9 @@ export default function Ritual() {
               />
               <button 
                 onClick={() => { 
+                  sfx.music.stop();
+                  sfx.drone.stop();
+                  sfx.endSound.play();
                   triggerBurst(); 
                   sendToDiscord();
                   setStep(5); 
