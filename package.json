@@ -1,0 +1,27 @@
+{
+  "name": "oracle-site",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^5.16.4",
+    "howler": "^2.2.4",
+    "motion": "^12.23.25",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "tsparticles": "^3.9.1"
+  },
+  "devDependencies": {
+    "@types/howler": "^2.2.12"
+  }
+}

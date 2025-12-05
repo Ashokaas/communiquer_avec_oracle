@@ -1,0 +1,110 @@
+---
+import Ritual from '../components/Ritual';
+import ParticlesBackground from '../components/ParticlesBackground';
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Oracle</title>
+    
+    <!-- Police Google Fonts (Cinzel) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Uncial+Antiqua&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #000;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        font-family: serif;
+        position: relative;
+      }
+
+      input, textarea {
+        spellcheck: false;
+      }
+
+      .video-container {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+      }
+
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .video-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      .ritual-container {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  
+  <body>
+    
+    <!-- 1. VIDÉO DE FOND (Toujours visible) -->
+    <div class="video-container">
+      <video id="background-video" autoplay loop muted playsinline src="/oracle.mp4">
+        <source  />
+      </video>
+      <!-- Overlay sombre pour meilleure lisibilité -->
+      <div class="video-overlay"></div>
+    </div>
+
+    <script>
+      const videoElement = document.getElementById('background-video');
+      const video = videoElement as HTMLVideoElement;
+      let isPlayingForward = true;
+
+      video.muted = true;
+      video.playbackRate = 1;
+      video.play();
+
+      video.addEventListener('ended', () => {
+        if (isPlayingForward) {
+          // Passer en mode arrière
+          isPlayingForward = false;
+          video.currentTime = video.duration;
+          video.playbackRate = -1;
+          video.play();
+        } else {
+          // Revenir au mode avant
+          isPlayingForward = true;
+          video.currentTime = 0;
+          video.playbackRate = 1;
+          video.play();
+        }
+      });
+    </script>
+
+    <!-- 2. LE RITUEL (React) - Centré par-dessus la vidéo -->
+    <!-- client:load est INDISPENSABLE pour que l'interactivité marche -->
+    <ParticlesBackground client:only="react" />
+    <div class="ritual-container">
+      <Ritual client:load />
+    </div>
+
+  </body>
+</html>
