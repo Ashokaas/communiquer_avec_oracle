@@ -41,7 +41,7 @@ Un site web immersif et mystique permettant aux visiteurs de communiquer avec l'
 
 1. Cloner le repository :
   ```bash
-  git clone <url-du-repo>
+  git clone https://github.com/Ashokaas/communiquer_avec_oracle
   cd oracle-site
   ```
 
