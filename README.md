@@ -1,46 +1,67 @@
-# Astro Starter Kit: Basics
+# L'Oracle - Site de Contact Mystique
 
-```sh
-npm create astro@latest -- --template basics
-```
+Un site web immersif et mystique permettant aux visiteurs de communiquer avec l'Oracle à travers un formulaire de contact interactif enrichi d'effets visuels et sonores.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🎨 Caractéristiques
 
-## 🚀 Project Structure
+- **Design mystique** avec vidéo en arrière-plan qui boucle en avant/arrière
+- **Particules ambiantes** (tsParticles) pour une ambiance magique
+- **Effets sonores** immersifs (musique d'ambiance, transitions, validation)
+- **Animations fluides** avec Framer Motion
+- **Formulaire multi-étapes** :
+  - Nom du visiteur
+  - Email (avec validation)
+  - Sujet de la quête
+  - Message/révélation
+- **Envoi vers Discord** via webhook
+- **Navigation** avec boutons retour à chaque étape
+- **Popup finale** avec explosion de particules
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🛠️ Technologies utilisées
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+- **Astro 5.16.4** - Framework web moderne
+- **React 19.2.1** - Composants interactifs
+- **TypeScript** - Typage statique
+- **Framer Motion 12.23.25** - Animations
+- **Howler.js 2.2.4** - Gestion audio
+- **tsParticles** - Effets de particules
+- **Polices Google Fonts** :
+  - Uncial Antiqua (titre)
+  - Cinzel Decorative (labels)
+  - Cormorant Garamond (inputs)
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 📦 Installation
 
-## 🧞 Commands
+### Prérequis
 
-All commands are run from the root of the project, from a terminal:
+- Node.js (version 18 ou supérieure)
+- npm ou yarn
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Étapes
 
-## 👀 Want to learn more?
+1. Cloner le repository :
+  ```bash
+  git clone <url-du-repo>
+  cd oracle-site
+  ```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+2. Installer les dépendances :
+  ```bash
+  npm install
+  ```
+
+3. Configurer les variables d'environnement :
+  - Créer un fichier `.env.local`
+  - Ajouter votre webhook Discord :
+    ```
+    PUBLIC_DISCORD_WEBHOOK=https://discord.com/api/webhooks/...
+    ```
+
+4. Lancer le serveur de développement :
+  ```bash
+  npm run dev
+  ```
+
+5. Ouvrir `http://localhost:3000` dans votre navigateur
+
+en cas de problème ou autre, contactez-nous à : antonin.moreau-2@etu.univ-tours.fr ou romain.blaquart@etu.univ-tours.fr
