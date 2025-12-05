@@ -50,18 +50,11 @@ Un site web immersif et mystique permettant aux visiteurs de communiquer avec l'
   npm install
   ```
 
-3. Configurer les variables d'environnement :
-  - Créer un fichier `.env.local`
-  - Ajouter votre webhook Discord :
-    ```
-    PUBLIC_DISCORD_WEBHOOK=https://discord.com/api/webhooks/...
-    ```
-
-4. Lancer le serveur de développement :
+3. Lancer le serveur de développement :
   ```bash
   npm run dev
   ```
 
-5. Ouvrir `http://localhost:3000` dans votre navigateur
+4. Ouvrir `http://localhost:3000` dans votre navigateur
 
 en cas de problème ou autre, contactez-nous à : antonin.moreau-2@etu.univ-tours.fr ou romain.blaquart@etu.univ-tours.fr
