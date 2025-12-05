@@ -6,18 +6,15 @@ import { loadSlim } from '@tsparticles/slim';
 import { tsParticles } from '@tsparticles/engine';
 import type { ISourceOptions } from '@tsparticles/engine';
 
-// Charger les sons (si les fichiers manquent, ça ne plantera pas)
+// charger les sons (si les fichiers manquent, ça ne plantera pas)
 const sfx = {
   music: new Howl({ src: ['/music.mp3'], loop: true, volume: 0.1 }),
-  drone: new Howl({ src: ['/drone.mp3'], loop: true, volume: 0.4 }),
-  click: new Howl({ src: ['/click.mp3'], volume: 0.2 }),
-  reveal: new Howl({ src: ['/reveal.mp3'], volume: 0.5 }),
   endSound: new Howl({ src: ['/end_sound.mp3'], volume: 0.6 }),
   errorEmail: new Howl({ src: ['/error_email.mp3'], volume: 0.5 }),
-  nextInput: new Howl({ src: ['/next_input.mp3'], volume: 0.03 }),
+  nextInput: new Howl({ src: ['/next_input.mp3'], volume: 0.08 }),
 };
 
-// Initialiser les particules une seule fois au chargement du module
+// initialiser les particules une seule fois au chargement du module
 let particlesInitialized = false;
 const initPromise = initParticlesEngine(async engine => {
   await loadSlim(engine);
@@ -26,17 +23,16 @@ const initPromise = initParticlesEngine(async engine => {
 });
 
 export default function Ritual() {
-  const [step, setStep] = useState(0); // 0=Intro, 1=Nom, 2=Email, 3=Sujet, 4=Message
+  // 0=intro, 1=nom, 2=email, 3=sujet, 4=message
+  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', msg: '' });
   const [particlesReady, setParticlesReady] = useState(particlesInitialized);
   const [emailError, setEmailError] = useState(false);
 
-  // Démarrer l'ambiance au premier clic
+  // démarrer l'ambiance au premier clic
   const start = () => {
     if (!sfx.music.playing()) sfx.music.play();
-    if (!sfx.drone.playing()) sfx.drone.play();
     sfx.nextInput.play();
-    sfx.reveal.play();
     setStep(1);
   };
 
@@ -47,7 +43,6 @@ export default function Ritual() {
 
   const next = () => {
     sfx.nextInput.play();
-    sfx.reveal.play();
     setStep(prev => prev + 1);
   };
 
@@ -55,7 +50,6 @@ export default function Ritual() {
     if (validateEmail(formData.email)) {
       setEmailError(false);
       sfx.nextInput.play();
-      sfx.reveal.play();
       setStep(prev => prev + 1);
     } else {
       sfx.errorEmail.play();
@@ -89,22 +83,20 @@ export default function Ritual() {
     }
   };
 
-  // Gérer la touche Entrée
+  // gérer la touche entrée
   const handleKey = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && step === 2) {
       nextWithEmailValidation();
     } else if (e.key === 'Enter' && step > 0 && step < 4 && step !== 2) {
       next();
     }
-    // Son de frappe
-    if (e.key.length === 1) sfx.click.play();
   };
 
   useEffect(() => {
     if (!particlesInitialized) {
       initPromise.then(() => setParticlesReady(true));
     }
-    // Démarrer la musique dès le chargement du composant
+    // démarrer la musique dès le chargement du composant
     if (!sfx.music.playing()) {
       sfx.music.play();
     }
@@ -512,7 +504,10 @@ export default function Ritual() {
     <>
       <style>{styles}</style>
       {step > 0 && step < 5 && (
-        <button className="back-btn" onClick={() => setStep(step - 1)}>
+        <button className="back-btn" onClick={() => {
+          sfx.nextInput.play();
+          setStep(step - 1);
+        }}>
           {step === 1 && "Refermer le voile..."}
           {step === 2 && "Rebrousser chemin..."}
           {step === 3 && "Renoncer à la vision..."}
@@ -522,7 +517,7 @@ export default function Ritual() {
       <div className="ritual-wrapper">
         <AnimatePresence mode="wait">
           
-          {/* ÉTAPE 0 : INTRO */}
+          {/* étape 0 : intro */}
           {step === 0 && (
             <motion.div 
               key="step0"
@@ -537,7 +532,7 @@ export default function Ritual() {
             </motion.div>
           )}
 
-          {/* ÉTAPE 1 : NOM */}
+          {/* étape 1 : nom */}
           {step === 1 && (
             <motion.div 
               key="step1"
@@ -559,7 +554,7 @@ export default function Ritual() {
             </motion.div>
           )}
 
-          {/* ÉTAPE 2 : EMAIL */}
+          {/* étape 2 : email */}
           {step === 2 && (
             <motion.div 
               key="step2"
@@ -585,7 +580,7 @@ export default function Ritual() {
             </motion.div>
           )}
 
-          {/* ÉTAPE 3 : SUJET */}
+          {/* étape 3 : sujet */}
           {step === 3 && (
             <motion.div 
               key="step3"
@@ -607,7 +602,7 @@ export default function Ritual() {
             </motion.div>
           )}
 
-          {/* ÉTAPE 4 : MESSAGE */}
+          {/* étape 4 : message */}
           {step === 4 && (
             <motion.div 
               key="step4"
@@ -629,7 +624,6 @@ export default function Ritual() {
               <button 
                 onClick={() => { 
                   sfx.music.stop();
-                  sfx.drone.stop();
                   sfx.endSound.play();
                   triggerBurst(); 
                   sendToDiscord();
@@ -642,7 +636,7 @@ export default function Ritual() {
             </motion.div>
           )}
 
-          {/* ÉTAPE 5 : FIN */}
+          {/* étape 5 : fin */}
           {step === 5 && (
             <motion.div 
               key="step5"

@@ -9,7 +9,7 @@ import ParticlesBackground from '../components/ParticlesBackground';
     <meta name="viewport" content="width=device-width" />
     <title>Oracle</title>
     
-    <!-- Police Google Fonts (Cinzel) -->
+    <!-- police google fonts (cinzel) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Uncial+Antiqua&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
     
@@ -64,12 +64,12 @@ import ParticlesBackground from '../components/ParticlesBackground';
   
   <body>
     
-    <!-- 1. VIDÉO DE FOND (Toujours visible) -->
+    <!-- vidéo de fond (toujours visible) -->
     <div class="video-container">
       <video id="background-video" autoplay loop muted playsinline src="/oracle.mp4">
         <source  />
       </video>
-      <!-- Overlay sombre pour meilleure lisibilité -->
+      <!-- overlay sombre pour meilleure lisibilité -->
       <div class="video-overlay"></div>
     </div>
 
@@ -84,13 +84,13 @@ import ParticlesBackground from '../components/ParticlesBackground';
 
       video.addEventListener('ended', () => {
         if (isPlayingForward) {
-          // Passer en mode arrière
+          // passer en mode arrière
           isPlayingForward = false;
           video.currentTime = video.duration;
           video.playbackRate = -1;
           video.play();
         } else {
-          // Revenir au mode avant
+          // revenir au mode avant
           isPlayingForward = true;
           video.currentTime = 0;
           video.playbackRate = 1;
@@ -99,8 +99,8 @@ import ParticlesBackground from '../components/ParticlesBackground';
       });
     </script>
 
-    <!-- 2. LE RITUEL (React) - Centré par-dessus la vidéo -->
-    <!-- client:load est INDISPENSABLE pour que l'interactivité marche -->
+    <!-- le rituel (react) - centré par-dessus la vidéo -->
+    <!-- client:load est indispensable pour que l'interactivité marche -->
     <ParticlesBackground client:only="react" />
     <div class="ritual-container">
       <Ritual client:load />
