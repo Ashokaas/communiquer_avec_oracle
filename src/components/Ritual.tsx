@@ -60,22 +60,14 @@ export default function Ritual() {
 
   const sendToDiscord = async () => {
     try {
-      await fetch('https://discord.com/api/webhooks/1446347832184541194/mB-re_fxB-m1Yci55TLYXzJvzBFMOPspJ0ULmcKtRJyS7jRBTah6rxqawEhR6ebUy68E', {
+      await fetch('https://api.oracle.ely.ovh/api/send-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          embeds: [{
-            title: '🔮 L\'ORACLE A REÇU UN MESSAGE',
-            color: 0x8B5CF6,
-            fields: [
-              { name: '👤 Nom', value: formData.name || 'Non renseigné', inline: true },
-              { name: '📧 Email', value: formData.email || 'Non renseigné', inline: true },
-              { name: '📝 Sujet', value: formData.subject || 'Non renseigné', inline: false },
-              { name: '💬 Message', value: formData.msg || 'Non renseigné', inline: false }
-            ],
-            timestamp: new Date().toISOString(),
-            footer: { text: 'Oracle Contact Form' }
-          }]
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          msg: formData.msg
         })
       });
     } catch (error) {
@@ -516,10 +508,10 @@ export default function Ritual() {
       )}
       <div className="ritual-wrapper">
         <AnimatePresence mode="wait">
-          
+
           {/* étape 0 : intro */}
           {step === 0 && (
-            <motion.div 
+            <motion.div
               key="step0"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -534,7 +526,7 @@ export default function Ritual() {
 
           {/* étape 1 : nom */}
           {step === 1 && (
-            <motion.div 
+            <motion.div
               key="step1"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -542,11 +534,11 @@ export default function Ritual() {
               style={{ width: '100%' }}
             >
               <label className="label">Qui ose déranger l'Oracle pendant son repos éternel ?</label>
-              <input 
+              <input
                 autoFocus
                 className="input-field"
                 value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
+                onChange={e => setFormData({ ...formData, name: e.target.value })}
                 onKeyDown={handleKey}
                 spellCheck={false}
                 autoComplete="off"
@@ -556,7 +548,7 @@ export default function Ritual() {
 
           {/* étape 2 : email */}
           {step === 2 && (
-            <motion.div 
+            <motion.div
               key="step2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -564,13 +556,13 @@ export default function Ritual() {
               style={{ width: '100%' }}
             >
               <label className="label">Où l'Oracle peut-il vous adresser sa vision ?</label>
-              <input 
+              <input
                 autoFocus
                 type="email"
                 className={`input-field${emailError ? ' error' : ''}`}
                 value={formData.email}
                 onChange={e => {
-                  setFormData({...formData, email: e.target.value});
+                  setFormData({ ...formData, email: e.target.value });
                   if (emailError) setEmailError(false);
                 }}
                 onKeyDown={handleKey}
@@ -582,7 +574,7 @@ export default function Ritual() {
 
           {/* étape 3 : sujet */}
           {step === 3 && (
-            <motion.div 
+            <motion.div
               key="step3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -590,11 +582,11 @@ export default function Ritual() {
               style={{ width: '100%' }}
             >
               <label className="label">Quel est l'objet de ta quête ?</label>
-              <input 
+              <input
                 autoFocus
                 className="input-field"
                 value={formData.subject}
-                onChange={e => setFormData({...formData, subject: e.target.value})}
+                onChange={e => setFormData({ ...formData, subject: e.target.value })}
                 onKeyDown={handleKey}
                 spellCheck={false}
                 autoComplete="off"
@@ -604,7 +596,7 @@ export default function Ritual() {
 
           {/* étape 4 : message */}
           {step === 4 && (
-            <motion.div 
+            <motion.div
               key="step4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -612,22 +604,22 @@ export default function Ritual() {
               style={{ width: '100%' }}
             >
               <label className="label">Ta Révélation :</label>
-              <textarea 
+              <textarea
                 autoFocus
                 rows={6}
                 className="textarea-field"
                 value={formData.msg}
-                onChange={e => setFormData({...formData, msg: e.target.value})}
+                onChange={e => setFormData({ ...formData, msg: e.target.value })}
                 spellCheck={false}
                 autoComplete="off"
               />
-              <button 
-                onClick={() => { 
+              <button
+                onClick={() => {
                   sfx.music.stop();
                   sfx.endSound.play();
-                  triggerBurst(); 
+                  triggerBurst();
                   sendToDiscord();
-                  setStep(5); 
+                  setStep(5);
                 }}
                 className="button"
               >
@@ -638,7 +630,7 @@ export default function Ritual() {
 
           {/* étape 5 : fin */}
           {step === 5 && (
-            <motion.div 
+            <motion.div
               key="step5"
               className="final-overlay"
               initial={{ opacity: 0 }}
